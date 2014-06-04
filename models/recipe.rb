@@ -1,5 +1,5 @@
 class Recipe
-  attr_reader :id, :name
+  attr_reader :id, :name, :description, :instructions
 
   def initialize(id, name, instructions = nil , description = nil)
     @id = id
@@ -26,5 +26,20 @@ class Recipe
     end
 
     recipes
+  end
+
+  def self.find(id)
+    query = "SELECT * FROM recipes WHERE id = $1"
+
+    connection = PG.connect(dbname: 'recipes')
+    result = connection.exec_params(query, [id]).first
+    connection.close
+
+    Recipe.new(
+      result['id'],
+      result['name'],
+      result['instructions'],
+      result['description']
+      )
   end
 end
