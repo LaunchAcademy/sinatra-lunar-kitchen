@@ -66,8 +66,8 @@ Failed examples:
 rspec ./spec/features/user_views_all_recipes_spec.rb:4 # User views recipes index page user sees all the recipes
 ```
 
-This tells us that when we try to visit "/recipes/556", the test on line 4 of
-the `spec/features/user_views_a_recipe_spec.rb` is failing. It's also telling us
+This tells us that when we try to visit "/recipes", the test on line 4 of
+the `spec/features/user_views_all_recipes_spec.rb` is failing. It's also telling us
 that it's failing because an undefined `all` method for the `Recipe` class
 is being called on line 17 of `server.rb`.
 
@@ -115,6 +115,12 @@ line 4 of `views/recipes/index.erb`, by calling `.each` on a `nil`.
 
 **Fix this one error and rerun the tests. Repeat until they are all passing!**
 
-Don't be afraid to open up the test files in `spec/features`. You might
-not be familiar with how to write tests yet but you should be able to get the
-general idea of what they're doing.
+### Tips
+
+* You are going to want to convert all of your SQL query results into an
+  instance of the correct class. For instance, when you query the database for
+  all of the recipes, you don't want to return an array of hashes, you wan't to
+  return an array of `Recipe` objects.
+* Don't be afraid to open up the test files in `spec/features`. You might
+  not be familiar with how to write tests yet but you should be able to get the
+  general idea of what they're doing.
