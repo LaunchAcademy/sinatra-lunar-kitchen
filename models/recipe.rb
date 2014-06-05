@@ -38,6 +38,12 @@ class Recipe
     ingredients_result = connection.exec_params(ingred_query, [id]).to_a
     connection.close
 
+    ingredients = []
+
+    ingredients_result.each do |result|
+      ingredients << Ingredient.new(result['name'])
+    end
+
     Recipe.new(
       recipe_result['id'],
       recipe_result['name'],
