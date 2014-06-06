@@ -2,43 +2,38 @@ require 'spec_helper'
 
 feature "User views a recipe" do
   scenario "user the basic recipe information" do
-    visit '/recipes/556'
+    recipe = Recipe.where(name: 'Rosemary Duck with Apricots').first
+    visit "/recipes/#{recipe.id}"
 
-    title = "Rosemary Duck with Apricots"
-    description = "does this recipe work with ducks you shoot, or that you buy in a grocery store?"
-    instructions = "Method 1 Combine the rosemary, brown sugar, black pepper, and salt."
-
-    expect(page).to have_content title
-    expect(page).to have_content description
-    expect(page).to have_content instructions
+    expect(page).to have_content recipe.name
+    expect(page).to have_content recipe.description
+    expect(page).to have_content recipe.instructions
   end
 
+  # you may have to modify the view to get these next two tests to pass
+
   scenario "user views a recipe without a description" do
-    visit '/recipes/403'
+    recipe = Recipe.where(description: nil).first
+    visit "/recipes/#{recipe.id}"
 
     expect(page).to have_content "This recipe doesn't have a description."
   end
 
   scenario "user views a recipe without any instructions" do
-    visit '/recipes/403'
+    recipe = Recipe.where(instructions: nil).first
+    visit "/recipes/#{recipe.id}"
 
     expect(page).to have_content "This recipe doesn't have any instructions."
   end
 
   scenario "user views a recipe's ingredients" do
-    visit '/recipes/508'
+    recipe = Recipe.where(name: 'Rosemary Duck with Apricots').first
+    visit "/recipes/#{recipe.id}"
 
-    ingredients = [
-      '1 lb fresh brussels sprouts',
-      '4-6 Tbsp butter',
-      '1/2 onion, chopped',
-      'Salt and Pepper',
-      '1 teaspoon lemon juice or 1 Tbsp Meyer lemon juice, fresh squeezed',
-      '1/4 cup toasted slivered almonds'
-    ]
+    ingredients = recipe.ingredients
 
     ingredients.each do |ingredient|
-      expect(page).to have_content ingredient
+      expect(page).to have_content ingredient.name
     end
   end
 end
